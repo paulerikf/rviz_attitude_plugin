@@ -64,10 +64,9 @@ void HeadingIndicator::paintEvent(QPaintEvent * /*event*/)
   draw3DCompassBezel(painter, radius);
 
   painter.save();
-  painter.rotate(-yaw_);
+  painter.rotate(90.0 - yaw_);
   drawRotatingCompassRose(painter, radius * 0.75);
   painter.restore();
-
   drawFixedOuterRing(painter, radius);
 }
 
@@ -121,7 +120,7 @@ void HeadingIndicator::drawFixedOuterRing(QPainter & painter, double radius)
   const QFontMetrics fm_card = painter.fontMetrics();
 
   const std::map<int, QString> cardinal_directions = {
-    {0, "E"}, {90, "S"}, {180, "W"}, {270, "N"}
+    {0, "N"}, {90, "E"}, {180, "S"}, {270, "W"}
   };
 
   for (int angle = 0; angle < 360; angle += 30) {
