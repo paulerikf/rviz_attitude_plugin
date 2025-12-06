@@ -152,28 +152,33 @@ void HeadingIndicator::drawFixedOuterRing(QPainter & painter, double radius)
     }
   }
 
-  // Degree numbers
+  // Degree numbers (true compass headings)
   const int degree_font_size = std::max(6, static_cast<int>(8 * sf));
   painter.setFont(QFont("Arial", degree_font_size, QFont::Normal));
   const QFontMetrics fm_deg = painter.fontMetrics();
 
   for (int angle = 0; angle < 360; angle += 30) {
-    int display_angle = angle > 180 ? angle - 360 : angle;
-    const QString text = (display_angle == 180 || display_angle == -180)
-      ? QString("±180")
-      : QString::number(-display_angle);
+    // Display true compass heading: 0–330
+    const QString text = QString::number(angle);
+
     const int text_w = std::max(20, static_cast<int>(30 * sf));
     const int text_h = fm_deg.height();
 
     painter.save();
     painter.rotate(angle);
     painter.setPen(QPen(QColor(160, 160, 160), 1));
+
+    // Position slightly inside the cardinal labels
     painter.translate(0, -degree_r + 2);
+
+    // Un-rotate so text reads upright
     painter.rotate(-angle);
+
     painter.drawText(
       QRectF(-text_w / 2.0, -text_h / 2.0, text_w, text_h),
       Qt::AlignCenter,
-      text);
+      text
+    );
     painter.restore();
   }
 
